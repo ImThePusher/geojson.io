@@ -35,9 +35,13 @@ module.exports = function(context) {
             var obj = {};
             sel.selectAll('tr').each(collectRow);
             function collectRow() {
-                if (d3.select(this).selectAll('input')[0][0].value) {
-                    obj[d3.select(this).selectAll('input')[0][0].value] =
-                        losslessNumber(d3.select(this).selectAll('input')[0][1].value);
+                var key = d3.select(this).selectAll('input')[0][0].value,
+                    val = losslessNumber(d3.select(this).selectAll('input')[0][1].value);
+
+                if (key && key === 'id') {
+                    e.popup._source.feature.id = val;
+                } else if (key) {
+                    obj[key] = val;
                 }
             }
             e.popup._source.feature.properties = obj;

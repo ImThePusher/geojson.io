@@ -88,13 +88,17 @@ function geojsonToLayer(geojson, layer) {
 
 function bindPopup(l) {
 
-    var properties = l.toGeoJSON().properties,
+    var feature = l.toGeoJSON(),
+        properties = feature.properties,
         table = '',
         info = '';
 
     if (!properties) return;
 
     if (!Object.keys(properties).length) properties = { '': '' };
+
+    table += '<tr><th><input type="text" value="id" readonly /></th>' +
+            '<td><input type="text" value="' + (feature.id || "") + '" /></td></tr>';
 
     for (var key in properties) {
         table += '<tr><th><input type="text" value="' + key + '"' + (!writable ? ' readonly' : '') + ' /></th>' +
