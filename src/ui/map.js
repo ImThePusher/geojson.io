@@ -38,7 +38,9 @@ module.exports = function(context, readonly) {
 
         context.map
             .on('draw:created', created)
-            .on('popupopen', popup(context));
+            .on('popupopen', popup(context))
+            .on('popupopen', focusFeature)
+            .on('popupclose', blurFeature);
 
         context.map.attributionControl.addAttribution('<a target="_blank" href="http://tmcw.wufoo.com/forms/z7x4m1/">Feedback</a>');
         context.map.attributionControl.addAttribution('<a target="_blank" href="https://github.com/mapbox/geojson.io/blob/gh-pages/CHANGELOG.md">Changelog</a>');
@@ -56,6 +58,18 @@ module.exports = function(context, readonly) {
         function created(e) {
             context.mapLayer.addLayer(e.layer);
             update();
+        }
+
+        function focusFeature(e) {
+            context.dispatch.focus(featureForLayer(e.popup._source));
+        }
+
+        function blurFeature(e) {
+            context.dispatch.blur(featureForLayer(e.popup._source));
+        }
+
+        function featureForLayer(l) {
+            return l.toGeoJSON();
         }
     }
 
@@ -75,6 +89,9 @@ module.exports = function(context, readonly) {
 function geojsonToLayer(geojson, layer) {
     layer.clearLayers();
     L.geoJson(geojson, {
+        style: function(feature) {
+            return feature.style;
+        },
         pointToLayer: function(feature, latlon) {
             if (!feature.properties) feature.properties = {};
             return L.mapbox.marker.style(feature, latlon);

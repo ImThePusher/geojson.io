@@ -1,6 +1,7 @@
 var table = require('../panel/table'),
     json = require('../panel/json'),
-    help = require('../panel/help');
+    help = require('../panel/help'),
+    style = require('../panel/style');
 
 module.exports = function(context, pane) {
     return function(selection) {
@@ -12,6 +13,11 @@ module.exports = function(context, pane) {
             title: ' Table',
             alt: 'Edit feature properties in a table',
             behavior: table
+        }, {
+            icon: 'style', // FIXME: add real icon
+            title: ' Style',
+            alt: ' Edit display properties',
+            behavior: style
         }, {
             icon: 'code',
             title: ' JSON',

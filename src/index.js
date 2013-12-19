@@ -21,7 +21,7 @@ api(gjIO);
 
 function geojsonIO() {
     var context = {};
-    context.dispatch = d3.dispatch('change', 'route');
+    context.dispatch = d3.dispatch('change', 'route', 'focus', 'blur');
     context.storage = store;
     context.map = map(context);
     context.data = data(context);
